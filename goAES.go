@@ -5,22 +5,34 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
-	"flag"
+	flag3 "flag"
 	"fmt"
 	"io"
 	"log"
 	"os"
 )
 
-var pass = flag.String("pass", "Password111111111111111111111111", "32 char password phrase- can be set to anything but keep it private")
-var text = flag.String("text", "HelloWorld", "plain text to encode")
-var cipherText = flag.String("cipher", "", "cipher text")
-var verbose = flag.Bool("verbose", false, "verbose flag")
+var pass = flag3.String("pass", "Password111111111111111111111111", "32 char password phrase- can be set to anything but keep it private")
+var text = flag3.String("text", "HelloWorld", "plain text to encode")
+var cipherText = flag3.String("cipher", "", "cipher text")
+var verbose = flag3.Bool("verbose", false, "verbose flag")
 
 func main() {
-	flag.Parse()
+	flag3.Parse()
 	key := []byte(*pass) // 32 bytes
-	if len(os.Args) < 2 {
+	fmt.Printf("interp.Options Env ptrStr=%+v\n", os.Getenv("ptrStr"))
+	/*
+		fs, err := GetFS()
+		if err != nil {
+			println("Error: ", err.Error())
+			os.Exit(1)
+		}
+		fs.AddFile("home/doug_was_here_mlkday.txt", "Hey MLK day is a great day to code")
+		for i, val := range os.Args {
+			fmt.Printf("os.Args[%d]=%s\n", i, val)
+		}
+	*/
+	if len(os.Args) < 1 {
 		println("usage: goAES -pass Password111111111111111111111111 -text HelloWorld")
 		println("or")
 		println("usage: goAES -pass Password111111111111111111111111 -cipher HnOnMPZAb32fz1f80VIL2pjQ+ahp/upo")
