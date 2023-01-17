@@ -5,20 +5,22 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
-	flag3 "flag"
+	"flag"
 	"fmt"
 	"io"
 	"log"
 	"os"
 )
 
-var pass = flag3.String("pass", "Password111111111111111111111111", "32 char password phrase- can be set to anything but keep it private")
-var text = flag3.String("text", "HelloWorld", "plain text to encode")
-var cipherText = flag3.String("cipher", "", "cipher text")
-var verbose = flag3.Bool("verbose", false, "verbose flag")
+var pass = flag.String("pass", "Password111111111111111111111111", "32 char password phrase- can be set to anything but keep it private")
+var text = flag.String("text", "HelloWorld", "plain text to encode")
+var cipherText = flag.String("cipher", "", "cipher text")
+var verbose = flag.Bool("verbose", false, "verbose flag")
 
 func main() {
-	flag3.Parse()
+	if !flag.Parsed() {
+		flag.Parse()
+	}
 	key := []byte(*pass) // 32 bytes
 	fmt.Printf("interp.Options Env ptrStr=%+v\n", os.Getenv("ptrStr"))
 	/*
