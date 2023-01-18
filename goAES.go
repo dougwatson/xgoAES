@@ -16,6 +16,7 @@ var pass = flag.String("pass", "Password111111111111111111111111", "32 char pass
 var text = flag.String("text", "HelloWorld", "plain text to encode")
 var cipherText = flag.String("cipher", "", "cipher text")
 var verbose = flag.Bool("verbose", false, "verbose flag")
+var roundtrip = flag.Bool("roundtrip", false, "future- could be useful for testing")
 
 func main() {
 	flag.Parse()
