@@ -18,11 +18,10 @@ var cipherText = flag.String("cipher", "", "cipher text")
 var verbose = flag.Bool("verbose", false, "verbose flag")
 
 func main() {
-	if !flag.Parsed() {
-		flag.Parse()
-	}
+	flag.Parse()
+
 	key := []byte(*pass) // 32 bytes
-	fmt.Printf("interp.Options Env ptrStr=%+v\n", os.Getenv("ptrStr"))
+	//fmt.Printf("interp.Options Env ptrStr=%+v\n", os.Getenv("ptrStr"))
 	/*
 		fs, err := GetFS()
 		if err != nil {
@@ -42,11 +41,18 @@ func main() {
 	}
 	if *cipherText == "" {
 		plaintext := []byte(*text)
-		ciphertextOutput, err := encrypt(key, plaintext)
+		/*
+			ciphertextOutput, err := encrypt(key, plaintext)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("%s\n", base64.StdEncoding.EncodeToString(ciphertextOutput))
+		*/
+		output, err := encryptAndDecrypt(key, plaintext) //for testing round trip
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("%s\n", base64.StdEncoding.EncodeToString(ciphertextOutput))
+		fmt.Printf("%s\n", output)
 	} else {
 		cipherBytes, err := base64.StdEncoding.DecodeString(*cipherText)
 		if err != nil {
@@ -61,6 +67,14 @@ func main() {
 	}
 }
 
+// This is top test round-trip encryption and decryption
+func encryptAndDecrypt(key, text []byte) ([]byte, error) {
+	b, err := encrypt(key, text)
+	if err != nil {
+		return nil, err
+	}
+	return decrypt(key, b)
+}
 func encrypt(key, text []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
