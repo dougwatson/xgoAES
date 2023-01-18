@@ -12,15 +12,17 @@ import (
 	"os"
 )
 
-var pass = flag.String("pass", "Password111111111111111111111111", "32 char password phrase- can be set to anything but keep it private")
-var text = flag.String("text", "HelloWorld", "plain text to encode")
-var cipherText = flag.String("cipher", "", "cipher text")
-var verbose = flag.Bool("verbose", false, "verbose flag")
-var roundtrip = flag.Bool("roundtrip", false, "future- could be useful for test")
-
 func main() {
-	flag.Parse()
+	var pass = flag.String("pass", "Password111111111111111111111111", "32 char password phrase- can be set to anything but keep it private")
+	var text = flag.String("text", "HelloWorld", "plain text to encode")
+	var cipherText = flag.String("cipher", "", "cipher text")
 
+	//for now we are just going to use the first argument as the text to encode
+	//flags are now working yet, must use os.Args to pas data into a yaegi script like this
+	if len(os.Args) > 0 && os.Args[1] != "" {
+		//fmt.Printf("FLAG=%#v len=%v\n", os.Args, len(os.Args))
+		*text = os.Args[1]
+	}
 	key := []byte(*pass) // 32 bytes
 	//fmt.Printf("interp.Options Env ptrStr=%+v\n", os.Getenv("ptrStr"))
 	/*
@@ -30,9 +32,6 @@ func main() {
 			os.Exit(1)
 		}
 		fs.AddFile("home/doug_was_here_mlkday.txt", "Hey MLK day is a great day to code")
-		for i, val := range os.Args {
-			fmt.Printf("os.Args[%d]=%s\n", i, val)
-		}
 	*/
 	if len(os.Args) < 1 {
 		println("usage: goAES -pass Password111111111111111111111111 -text HelloWorld")
@@ -83,9 +82,9 @@ func encrypt(key, text []byte) ([]byte, error) {
 	}
 	b := base64.StdEncoding.EncodeToString(text)
 	ciphertext := make([]byte, aes.BlockSize+len(b))
-	if *verbose {
-		println("blocksize=", aes.BlockSize, "ciphertext=", string(ciphertext))
-	}
+	//if *verbose {
+	//	println("blocksize=", aes.BlockSize, "ciphertext=", string(ciphertext))
+	//}
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		return nil, err
@@ -102,9 +101,9 @@ func decrypt(key, text []byte) ([]byte, error) {
 	}
 	iv := text[:aes.BlockSize]
 	text = text[aes.BlockSize:]
-	if *verbose {
-		println("iv", base64.StdEncoding.EncodeToString(iv), "cipher text", base64.StdEncoding.EncodeToString(iv))
-	}
+	//if *verbose {
+	//	println("iv", base64.StdEncoding.EncodeToString(iv), "cipher text", base64.StdEncoding.EncodeToString(iv))
+	//}
 	cfb := cipher.NewCFBDecrypter(block, []byte(iv))
 	cfb.XORKeyStream(text, text)
 	data, err := base64.StdEncoding.DecodeString(string(text))
