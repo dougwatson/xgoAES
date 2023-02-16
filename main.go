@@ -24,15 +24,7 @@ func main() {
 		*text = os.Args[1]
 	}
 	key := []byte(*pass) // 32 bytes
-	//fmt.Printf("interp.Options Env ptrStr=%+v\n", os.Getenv("ptrStr"))
-	/*
-		fs, err := GetFS()
-		if err != nil {
-			println("Error: ", err.Error())
-			os.Exit(1)
-		}
-		fs.AddFile("home/doug_was_here_mlkday.txt", "Hey MLK day is a great day to code")
-	*/
+
 	if len(os.Args) < 1 {
 		println("usage: goAES -pass Password111111111111111111111111 -text HelloWorld")
 		println("or")
